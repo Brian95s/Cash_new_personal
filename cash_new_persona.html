@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash New - Inversión Segura</title>
+</head>
+<body>
+    <h2>Registrar Retiro</h2>
+    <input type="number" id="cantidadRetiro" placeholder="Cantidad">
+    <select id="metodoRetiro" onchange="cambiarMetodoRetiro()">
+        <option value="ARS">Pesos Argentinos (ARS)</option>
+        <option value="USDT (BEP20)">USDT (BEP20)</option>
+        <option value="USDT (TRC20)">USDT (TRC20)</option>
+    </select>
+
+    <div id="retiroARS">
+        <input type="text" id="cbu" placeholder="CBU">
+        <input type="text" id="banco" placeholder="Banco/Billetera">
+        <input type="text" id="titular" placeholder="Titular">
+        <input type="text" id="dni" placeholder="DNI">
+    </div>
+
+    <div id="retiroUSDT" style="display: none;">
+        <input type="text" id="direccionUSDT" placeholder="Dirección USDT">
+    </div>
+
+    <button onclick="registrarRetiro()">Solicitar Retiro</button>
+
+    <h2>Historial de Retiros</h2>
+    <div class="history">
+        <table>
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Método</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="historialRetiros"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let retiros = [];
+
+        function cambiarMetodoRetiro() {
+            let metodo = document.getElementById("metodoRetiro").value;
+            document.getElementById("retiroARS").style.display = metodo === "ARS" ? "block" : "none";
+            document.getElementById("retiroUSDT").style.display = metodo.includes("USDT") ? "block" : "none";
+        }
+
+        function registrarRetiro() {
+            let cantidad = document.getElementById("cantidadRetiro").value;
+            let metodo = document.getElementById("metodoRetiro").value;
+            if (!cantidad || cantidad <= 0) {
+                alert("Ingrese una cantidad válida");
+                return;
+            }
+            let fecha = new Date().toISOString().split('T')[0];
+            let estado = "pendiente";
+
+            if (retiros.length >= 12) {
+                retiros.shift();
+            }
+
+            retiros.push({ cantidad, metodo, fecha, estado });
+            actualizarHistorialRetiros();
+        }
+
+        function actualizarHistorialRetiros() {
+            const historial = document.getElementById("historialRetiros");
+            historial.innerHTML = "";
+            retiros.forEach(ret => {
+                let estadoColor = ret.estado === "completo" ? "status-completed" : ret.estado === "pendiente" ? "status-pending" : "status-rejected";
+                historial.innerHTML += `<tr>
+                    <td>${ret.cantidad}</td>
+                    <td>${ret.metodo}</td>
+                    <td>${ret.fecha}</td>
+                    <td class="${estadoColor}">● ${ret.estado}</td>
+                </tr>`;
+            });
+        }
+    </script>
+</body>
+</html>
