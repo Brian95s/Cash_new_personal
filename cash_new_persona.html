@@ -1,87 +1,78 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash New - Inversión Segura</title>
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
-    <h2>Registrar Retiro</h2>
-    <input type="number" id="cantidadRetiro" placeholder="Cantidad">
-    <select id="metodoRetiro" onchange="cambiarMetodoRetiro()">
-        <option value="ARS">Pesos Argentinos (ARS)</option>
-        <option value="USDT (BEP20)">USDT (BEP20)</option>
-        <option value="USDT (TRC20)">USDT (TRC20)</option>
-    </select>
-
-    <div id="retiroARS">
-        <input type="text" id="cbu" placeholder="CBU">
-        <input type="text" id="banco" placeholder="Banco/Billetera">
-        <input type="text" id="titular" placeholder="Titular">
-        <input type="text" id="dni" placeholder="DNI">
-    </div>
-
-    <div id="retiroUSDT" style="display: none;">
-        <input type="text" id="direccionUSDT" placeholder="Dirección USDT">
-    </div>
-
-    <button onclick="registrarRetiro()">Solicitar Retiro</button>
-
-    <h2>Historial de Retiros</h2>
-    <div class="history">
-        <table>
-            <thead>
-                <tr>
-                    <th>Cantidad</th>
-                    <th>Método</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody id="historialRetiros"></tbody>
-        </table>
-    </div>
-
-    <script>
-        let retiros = [];
-
-        function cambiarMetodoRetiro() {
-            let metodo = document.getElementById("metodoRetiro").value;
-            document.getElementById("retiroARS").style.display = metodo === "ARS" ? "block" : "none";
-            document.getElementById("retiroUSDT").style.display = metodo.includes("USDT") ? "block" : "none";
-        }
-
-        function registrarRetiro() {
-            let cantidad = document.getElementById("cantidadRetiro").value;
-            let metodo = document.getElementById("metodoRetiro").value;
-            if (!cantidad || cantidad <= 0) {
-                alert("Ingrese una cantidad válida");
-                return;
-            }
-            let fecha = new Date().toISOString().split('T')[0];
-            let estado = "pendiente";
-
-            if (retiros.length >= 12) {
-                retiros.shift();
-            }
-
-            retiros.push({ cantidad, metodo, fecha, estado });
-            actualizarHistorialRetiros();
-        }
-
-        function actualizarHistorialRetiros() {
-            const historial = document.getElementById("historialRetiros");
-            historial.innerHTML = "";
-            retiros.forEach(ret => {
-                let estadoColor = ret.estado === "completo" ? "status-completed" : ret.estado === "pendiente" ? "status-pending" : "status-rejected";
-                historial.innerHTML += `<tr>
-                    <td>${ret.cantidad}</td>
-                    <td>${ret.metodo}</td>
-                    <td>${ret.fecha}</td>
-                    <td class="${estadoColor}">● ${ret.estado}</td>
-                </tr>`;
-            });
-        }
-    </script>
+    <nav class="menu">
+        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+        <ul class="menu-list">
+            <li><a href="#inicio"><i class="icon-home"></i> Inicio</a></li>
+            <li><a href="#perfil"><i class="icon-user"></i> Perfil</a></li>
+            <li><a href="#depositos"><i class="icon-money"></i> Depósitos</a></li>
+            <li><a href="#retiros"><i class="icon-bank"></i> Retiros</a></li>
+            <li><a href="#referidos"><i class="icon-network"></i> Referidos</a></li>
+            <li><a href="#terminos"><i class="icon-doc"></i> Términos y Condiciones</a></li>
+        </ul>
+    </nav>
+    <section id="contenido">
+        <h1>Bienvenido a la Plataforma</h1>
+        <p>Selecciona una opción del menú para continuar.</p>
+    </section>
 </body>
-</html>
+</html><style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: #004d66;
+    padding-top: 20px;
+    transform: translateX(-250px);
+    transition: transform 0.3s ease-in-out;
+}
+.menu.active {
+    transform: translateX(0);
+}
+.menu-toggle {
+    position: absolute;
+    top: 15px;
+    right: -50px;
+    background: #004d66;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.menu-list {
+    list-style: none;
+    padding: 0;
+}
+.menu-list li {
+    padding: 15px;
+    text-align: left;
+}
+.menu-list li a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+.menu-list li a i {
+    margin-right: 10px;
+}
+</style><script>
+function toggleMenu() {
+    document.querySelector(".menu").classList.toggle("active");
+}
+</script>
