@@ -9,6 +9,7 @@
       font-family: Arial, sans-serif;
       background: linear-gradient(to right, #ff7e5f, #feb47b);
       color: white;
+      text-align: center;
     }.header {
   display: flex;
   justify-content: space-between;
@@ -24,7 +25,6 @@
 
 .welcome-message {
   font-size: 20px;
-  text-align: center;
   flex-grow: 1;
 }
 
@@ -60,8 +60,8 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: -250px;
-  width: 250px;
+  left: -200px;
+  width: 200px;
   height: 100%;
   background-color: #222;
   padding: 20px;
@@ -81,17 +81,10 @@
   text-decoration: none;
 }
 
-.close-menu {
-  font-size: 24px;
-  cursor: pointer;
-  text-align: right;
-}
-
   </style>
 </head>
-<body>
+<body onclick="closeSidebar()">
   <div class="sidebar" id="sidebar">
-    <div class="close-menu" onclick="closeSidebar()">✖</div>
     <a href="#">Perfil</a>
     <a href="#">Inversiones</a>
     <a href="#">Referidos</a>
@@ -120,14 +113,16 @@
       document.getElementById("sidebar").classList.remove("show");
     }
 
-    // Nivel VIP (simulado según monto)
+    // Nivel VIP dinámico
     const recarga = parseInt(localStorage.getItem('recarga')) || 100;
     const vipBox = document.getElementById("vip-box");
     let vipLevel = 1;
+
     if (recarga >= 1000) vipLevel = 5;
     else if (recarga >= 500) vipLevel = 4;
     else if (recarga >= 300) vipLevel = 3;
     else if (recarga >= 150) vipLevel = 2;
+
     vipBox.textContent = `Nivel VIP: ${vipLevel}`;
 
     // Barra de ganancias en tiempo real (simulada)
