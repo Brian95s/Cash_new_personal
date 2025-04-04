@@ -1,78 +1,144 @@
 <!DOCTYPE html><html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProfitLink - Panel Principal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      color: white;
+    }.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.welcome-message {
+  font-size: 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.vip-section {
+  text-align: right;
+}
+
+.vip-box {
+  background-color: #222;
+  padding: 5px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.earnings-bar {
+  height: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  margin-top: 5px;
+  position: relative;
+}
+
+.earnings-fill {
+  height: 100%;
+  background-color: limegreen;
+  border-radius: 10px;
+  width: 0%;
+  transition: width 1s ease-in-out;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #222;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+  transition: left 0.3s ease;
+  z-index: 100;
+}
+
+.sidebar.show {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  margin: 10px 0;
+  color: white;
+  text-decoration: none;
+}
+
+.close-menu {
+  font-size: 24px;
+  cursor: pointer;
+  text-align: right;
+}
+
+  </style>
 </head>
 <body>
-    <nav class="menu">
-        <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
-        <ul class="menu-list">
-            <li><a href="#inicio"><i class="icon-home"></i> Inicio</a></li>
-            <li><a href="#perfil"><i class="icon-user"></i> Perfil</a></li>
-            <li><a href="#depositos"><i class="icon-money"></i> Depósitos</a></li>
-            <li><a href="#retiros"><i class="icon-bank"></i> Retiros</a></li>
-            <li><a href="#referidos"><i class="icon-network"></i> Referidos</a></li>
-            <li><a href="#terminos"><i class="icon-doc"></i> Términos y Condiciones</a></li>
-        </ul>
-    </nav>
-    <section id="contenido">
-        <h1>Bienvenido a la Plataforma</h1>
-        <p>Selecciona una opción del menú para continuar.</p>
-    </section>
-</body>
-</html><style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f4f4;
-}
-.menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background: #004d66;
-    padding-top: 20px;
-    transform: translateX(-250px);
-    transition: transform 0.3s ease-in-out;
-}
-.menu.active {
-    transform: translateX(0);
-}
-.menu-toggle {
-    position: absolute;
-    top: 15px;
-    right: -50px;
-    background: #004d66;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-.menu-list {
-    list-style: none;
-    padding: 0;
-}
-.menu-list li {
-    padding: 15px;
-    text-align: left;
-}
-.menu-list li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-.menu-list li a i {
-    margin-right: 10px;
-}
-</style><script>
-function toggleMenu() {
-    document.querySelector(".menu").classList.toggle("active");
-}
-</script>
+  <div class="sidebar" id="sidebar">
+    <div class="close-menu" onclick="closeSidebar()">✖</div>
+    <a href="#">Perfil</a>
+    <a href="#">Inversiones</a>
+    <a href="#">Referidos</a>
+    <a href="#">Cerrar sesión</a>
+  </div>  <div class="header">
+    <div class="menu-icon" onclick="toggleSidebar(event)">☰</div>
+    <div class="welcome-message" id="welcome-message">Bienvenido, Usuario</div>
+    <div class="vip-section">
+      <div class="vip-box" id="vip-box">Nivel VIP: 1</div>
+      <div class="earnings-bar">
+        <div class="earnings-fill" id="earnings-fill"></div>
+      </div>
+    </div>
+  </div>  <script>
+    // Simula obtener el nombre del usuario desde el login
+    const username = localStorage.getItem('username') || 'Usuario';
+    document.getElementById("welcome-message").textContent = `Bienvenido, ${username}`;
+
+    // Sidebar
+    function toggleSidebar(event) {
+      event.stopPropagation();
+      document.getElementById("sidebar").classList.toggle("show");
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").classList.remove("show");
+    }
+
+    // Nivel VIP (simulado según monto)
+    const recarga = parseInt(localStorage.getItem('recarga')) || 100;
+    const vipBox = document.getElementById("vip-box");
+    let vipLevel = 1;
+    if (recarga >= 1000) vipLevel = 5;
+    else if (recarga >= 500) vipLevel = 4;
+    else if (recarga >= 300) vipLevel = 3;
+    else if (recarga >= 150) vipLevel = 2;
+    vipBox.textContent = `Nivel VIP: ${vipLevel}`;
+
+    // Barra de ganancias en tiempo real (simulada)
+    let earnings = 0;
+    function updateEarnings() {
+      earnings += Math.random() * 5;
+      const percent = Math.min((earnings / 100) * 100, 100);
+      document.getElementById("earnings-fill").style.width = `${percent}%`;
+    }
+
+    setInterval(updateEarnings, 60000);
+    updateEarnings();
+  </script></body>
+</html>
